@@ -1,4 +1,4 @@
-# 🎉 Altruxa Path Game v1.5.1 - Bug Fix Release
+# 🎉 Altruxa Path Game v.0.0.4 - Bug Fix Release
 
 **Release Date:** October 25, 2025  
 **Previous Version:** v1.5 (Stats Integration)  
@@ -200,7 +200,7 @@ These remain from v1.5 and will be addressed in future releases:
 
 ## 🎯 Upgrade Instructions
 
-### From v1.5 to v1.5.1:
+### From v1.5 to v.0.0.4:
 
 1. **Backup Your Current Version**
    ```bash
@@ -209,7 +209,7 @@ These remain from v1.5 and will be addressed in future releases:
 
 2. **Replace with New Version**
    ```bash
-   cp altruxa-path-game-v1.5.1-fixed.jsx altruxa-path-game.jsx
+   cp altruxa-path-game-v.0.0.4-fixed.jsx altruxa-path-game.jsx
    ```
 
 3. **No Database Migration Needed**
@@ -227,9 +227,9 @@ These remain from v1.5 and will be addressed in future releases:
 
 ## 📁 File Locations
 
-- **New Release:** `altruxa-path-game-v1.5.1-fixed.jsx`
+- **New Release:** `altruxa-path-game-v.0.0.4-fixed.jsx`
 - **Previous Version:** `altruxa-path-game-enhanced.jsx` (v1.5)
-- **Changelog:** `CHANGELOG_v1.5.1.md` (this file)
+- **Changelog:** `CHANGELOG_v.0.0.4.md` (this file)
 
 ---
 
@@ -292,7 +292,7 @@ These fixes follow the guidelines in DEVELOPMENT_ROADMAP.md. For future contribu
 
 **Endings Still Not Working?**
 → Check browser console for JavaScript errors  
-→ Verify you're using v1.5.1-fixed.jsx  
+→ Verify you're using v.0.0.4-fixed.jsx  
 → Clear localStorage and retry  
 
 **Assessment Reset Not Working?**
@@ -314,7 +314,7 @@ These fixes follow the guidelines in DEVELOPMENT_ROADMAP.md. For future contribu
 
 ## ✨ Conclusion
 
-Version 1.5.1 is a critical bug fix release that resolves all blocking issues from v1.5. The game is now:
+Version .0.0.4 is a critical bug fix release that resolves all blocking issues from v1.5. The game is now:
 
 ✅ **Fully Playable** - All story paths lead to proper endings  
 ✅ **Stable** - Assessment reset works correctly  
@@ -325,7 +325,7 @@ The foundation is solid. Next focus: playtesting and balance tuning! 🎮
 
 ---
 
-**Version:** 1.5.1  
+**Version:** .0.0.4  
 **Status:** ✅ Stable - Ready for Playtesting  
 **Next Version:** 1.6 (Stat Decay + Achievements)  
 **Last Updated:** October 25, 2025

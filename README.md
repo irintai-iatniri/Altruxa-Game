@@ -1,6 +1,6 @@
 # 📚 Altruxa Path Game - Complete Documentation Index
 
-**Project Version:** 1.5 (Stats Integration Complete)  
+**Project Version:** .0.0.4 (Stats Integration Complete)  
 **Last Updated:** October 25, 2025  
 **Developer:** Claude AI (Anthropic) + Irintai (Concept & Philosophy)
 
@@ -26,7 +26,7 @@ The Altruxa Path Game is an interactive narrative experience that teaches **Cosm
 
 1. **[STATS_INTEGRATION_SUMMARY.md](computer:///mnt/user-data/outputs/STATS_INTEGRATION_SUMMARY.md)**
    - **Read this first!**
-   - What's new in v1.5
+   - What's new in v.0.0.4
    - How the stats system works
    - What stat gates unlock
    - Usage guide
@@ -309,7 +309,7 @@ Development:
 4. ✅ Playtest all story paths (2 hours)
 5. ✅ Adjust stat requirements based on playtesting (1 hour)
 
-**Total: ~4 hours to stable v1.5**
+**Total: ~4 hours to stable v.0.0.4**
 
 ### For Version 1.6:
 1. ✅ Implement stat decay (-1 to -3 on bad choices)
@@ -452,7 +452,7 @@ Every bug you fix, every feature you add, every player who has a moment of genui
 
 **Last Updated:** October 25, 2025  
 **Next Review:** November 1, 2025  
-**Version:** 1.5 (Stats Integration Complete)
+**Version:** .0.0.4 (Stats Integration Complete)
 
 ---
 

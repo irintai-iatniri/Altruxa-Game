@@ -145,13 +145,13 @@ Testing Status: ✅ All fixes verified
 
 ## 🎮 Game Status
 
-### Before v1.5.1:
+### Before v.0.0.4:
 - ❌ Players could get stuck at endings
 - ❌ Assessment reset didn't work properly
 - ❌ Notifications could overlap and clutter UI
 - ⚠️ Not ready for release
 
-### After v1.5.1:
+### After v.0.0.4:
 - ✅ All story paths have proper endings
 - ✅ Assessment reset works perfectly
 - ✅ Clean, polished notification system
@@ -178,8 +178,8 @@ Testing Status: ✅ All fixes verified
 ## 📁 Files
 
 ### What You Have:
-- ✅ **[altruxa-path-game-v1.5.1-fixed.jsx](computer:///mnt/user-data/outputs/altruxa-path-game-v1.5.1-fixed.jsx)** - The fixed game (USE THIS!)
-- ✅ **[CHANGELOG_v1.5.1.md](computer:///mnt/user-data/outputs/CHANGELOG_v1.5.1.md)** - Detailed changelog
+- ✅ **[altruxa-path-game-v.0.0.4-fixed.jsx](computer:///mnt/user-data/outputs/altruxa-path-game-v.0.0.4-fixed.jsx)** - The fixed game (USE THIS!)
+- ✅ **[CHANGELOG_v.0.0.4.md](computer:///mnt/user-data/outputs/CHANGELOG_v.0.0.4.md)** - Detailed changelog
 - ✅ **[CRITICAL_FIXES_SUMMARY.md](computer:///mnt/user-data/outputs/CRITICAL_FIXES_SUMMARY.md)** - This file
 
 ### Previous Versions (Backup):
@@ -231,6 +231,6 @@ Time to playtest and balance! 🚀
 
 ---
 
-**Version:** 1.5.1  
+**Version:** .0.0.4  
 **Fixed:** October 25, 2025  
 **Status:** ✅ Stable
