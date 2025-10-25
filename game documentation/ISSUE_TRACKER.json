@@ -1,0 +1,583 @@
+{
+  "project": "Altruxa Path Game",
+  "version": "1.5",
+  "lastUpdated": "2025-10-25",
+  
+  "issues": [
+    {
+      "id": "ISSUE-001",
+      "title": "Incomplete Story Endings Missing Return Navigation",
+      "type": "bug",
+      "priority": "high",
+      "status": "open",
+      "assignee": null,
+      "createdDate": "2025-10-25",
+      "description": "Five new story endings don't have proper conclusion or return to menu option",
+      "affectedScenes": [
+        "story_3_legal_pathway",
+        "story_3_recorded_conversation",
+        "story_4_long_game",
+        "story_3_public_advocate",
+        "story_ending_reformer"
+      ],
+      "location": "Lines 1836-1870",
+      "reproduction": "Complete Maya's Journey via stat-gated paths",
+      "expectedBehavior": "All endings should have 'Return to Menu' and 'View Journey' options",
+      "actualBehavior": "Endings have empty choices array, player is stuck",
+      "proposedFix": "Add standard ending choices to all incomplete scenes",
+      "estimatedEffort": "15 minutes",
+      "tags": ["navigation", "story", "blocking"]
+    },
+    
+    {
+      "id": "ISSUE-002",
+      "title": "Stat Requirements May Be Unreachable on First Playthrough",
+      "type": "balance",
+      "priority": "high",
+      "status": "needs-testing",
+      "assignee": null,
+      "createdDate": "2025-10-25",
+      "description": "High-level stat gates (Wisdom 9-10, Courage 9) may be impossible to reach through normal gameplay",
+      "affectedFeatures": [
+        "story_1e_mentor unlock (requires Wisdom 7)",
+        "story_2_path_g unlock (requires Wisdom 8 + Compassion 6)",
+        "CEO recording unlock (requires Wisdom 9)",
+        "Long game unlock (requires Wisdom 10 + Empathy 8)",
+        "Public advocate unlock (requires Courage 9 + Compassion 8)"
+      ],
+      "location": "Lines 625-755",
+      "testingNeeded": "Complete playthrough tracking stat gains",
+      "expectedBehavior": "At least 50% of gated content reachable on first playthrough",
+      "proposedFix": [
+        "Lower requirements to 5-8 range",
+        "OR add more +2/+3 stat gain choices early in story",
+        "OR both"
+      ],
+      "estimatedEffort": "2 hours (testing + adjustment)",
+      "tags": ["gameplay", "balance", "playtesting-required"]
+    },
+    
+    {
+      "id": "ISSUE-003",
+      "title": "Assessment Reset Doesn't Clear Story Progress Stats",
+      "type": "bug",
+      "priority": "medium",
+      "status": "open",
+      "assignee": null,
+      "createdDate": "2025-10-25",
+      "description": "When retaking assessment, stat gains from previous story playthrough persist",
+      "location": "Lines 50-60 (clearAssessment function)",
+      "reproduction": [
+        "Complete assessment",
+        "Play through story gaining stats",
+        "Retake assessment",
+        "Stats show old values + new assessment values"
+      ],
+      "expectedBehavior": "Retaking assessment should reset all stats to new assessment baseline",
+      "actualBehavior": "Old stat gains persist in addition to new assessment",
+      "proposedFix": "Add score, choices, and storyChoices reset to clearAssessment()",
+      "estimatedEffort": "5 minutes",
+      "tags": ["data-persistence", "localStorage"]
+    },
+    
+    {
+      "id": "ISSUE-004",
+      "title": "Stat Change Notifications Stack Without Clearing",
+      "type": "bug",
+      "priority": "low",
+      "status": "open",
+      "assignee": null,
+      "createdDate": "2025-10-25",
+      "description": "Multiple stat change notifications can overlap if player navigates rapidly",
+      "location": "Lines 186-207 (StatChangeNotification component)",
+      "reproduction": [
+        "Make choice that changes stats",
+        "Quickly navigate back",
+        "Make different choice",
+        "Old notification still visible with new one"
+      ],
+      "expectedBehavior": "New navigation should clear previous notifications",
+      "actualBehavior": "Notifications persist for full 3 second duration regardless of navigation",
+      "proposedFix": "Clear statChanges array on navigation or before setting new changes",
+      "estimatedEffort": "10 minutes",
+      "tags": ["ui", "notifications", "minor"]
+    },
+    
+    {
+      "id": "ISSUE-005",
+      "title": "No Maximum Cap on Stats",
+      "type": "potential-bug",
+      "priority": "medium",
+      "status": "needs-investigation",
+      "assignee": null,
+      "createdDate": "2025-10-25",
+      "description": "Stats can grow indefinitely, no maximum value enforced",
+      "location": "Lines 2680-2716 (makeChoice stat updates)",
+      "implications": [
+        "Stats display progress bar may overflow",
+        "Balance issues if stats grow too high",
+        "No sense of 'mastery' or completion"
+      ],
+      "proposedFix": [
+        "Add max value (15? 20?)",
+        "Cap in setScore calculations",
+        "Consider diminishing returns above certain threshold"
+      ],
+      "estimatedEffort": "30 minutes",
+      "tags": ["balance", "stats-system"]
+    },
+    
+    {
+      "id": "ISSUE-006",
+      "title": "Journal System Only Triggers Every 2 Choices",
+      "type": "enhancement",
+      "priority": "low",
+      "status": "by-design",
+      "assignee": null,
+      "createdDate": "2025-10-25",
+      "description": "Journal prompts only appear automatically every 2 story choices, missing some important moments",
+      "location": "Lines 2657-2677",
+      "currentBehavior": "if (storyChoices.length > 0 && storyChoices.length % 2 === 0)",
+      "proposedEnhancements": [
+        "Add manual journal entry button (always available)",
+        "Flag certain scenes as 'journal-worthy' automatically",
+        "Allow journal at any time from stats panel"
+      ],
+      "estimatedEffort": "1 hour",
+      "tags": ["journal", "enhancement", "ux"]
+    },
+    
+    {
+      "id": "ISSUE-007",
+      "title": "Stats Display Always Visible May Be Distracting",
+      "type": "enhancement",
+      "priority": "low",
+      "status": "open",
+      "assignee": null,
+      "createdDate": "2025-10-25",
+      "description": "Stats panel shows on all scenes including narrative moments where it might break immersion",
+      "location": "Lines 164-185 (StatsDisplay component)",
+      "proposedEnhancements": [
+        "Add toggle to collapse/expand stats panel",
+        "Auto-collapse during story text, expand during choices",
+        "Condensed mini-view option",
+        "Add tooltips explaining what each stat unlocks"
+      ],
+      "estimatedEffort": "2 hours",
+      "tags": ["ui", "ux", "immersion"]
+    },
+    
+    {
+      "id": "ISSUE-008",
+      "title": "Navigation History May Break With Modal Interrupts",
+      "type": "potential-bug",
+      "priority": "medium",
+      "status": "needs-testing",
+      "assignee": null,
+      "createdDate": "2025-10-25",
+      "description": "Journal modal interrupts navigation flow, back/forward might not work correctly",
+      "location": "Lines 62-85 (navigation functions)",
+      "testingNeeded": [
+        "Make choice → Journal opens → Save → Navigate back",
+        "Test back button after journal",
+        "Test forward button after journal",
+        "Verify history stack integrity"
+      ],
+      "proposedFix": "Ensure journal doesn't pollute navigation history",
+      "estimatedEffort": "1 hour (testing + fixes)",
+      "tags": ["navigation", "journal", "state-management"]
+    },
+    
+    {
+      "id": "ISSUE-009",
+      "title": "Mobile Layout May Break Below 375px Width",
+      "type": "potential-bug",
+      "priority": "medium",
+      "status": "needs-testing",
+      "assignee": null,
+      "createdDate": "2025-10-25",
+      "description": "Stats panel uses grid cols-2 md:cols-4 which may not adapt well to very small screens",
+      "location": "Lines 164-185 (StatsDisplay)",
+      "devicesToTest": [
+        "iPhone SE (320px)",
+        "Small Android devices (360px)",
+        "Landscape mode on mobile"
+      ],
+      "proposedFix": "Add sm: breakpoint or adjust grid layout for mobile",
+      "estimatedEffort": "1 hour",
+      "tags": ["responsive", "mobile", "css"]
+    },
+    
+    {
+      "id": "ISSUE-010",
+      "title": "LocalStorage Failures Not Handled Gracefully",
+      "type": "enhancement",
+      "priority": "low",
+      "status": "open",
+      "assignee": null,
+      "createdDate": "2025-10-25",
+      "description": "If localStorage is disabled or full, app doesn't handle gracefully",
+      "location": "Lines 22-37 (useEffect with localStorage)",
+      "scenarios": [
+        "Private/incognito mode with localStorage disabled",
+        "Storage quota exceeded",
+        "Browser security settings blocking localStorage"
+      ],
+      "proposedFix": [
+        "Wrap localStorage calls in try/catch",
+        "Show user-friendly message if persistence fails",
+        "Allow game to function without persistence (session only)"
+      ],
+      "estimatedEffort": "1.5 hours",
+      "tags": ["error-handling", "localStorage", "ux"]
+    }
+  ],
+  
+  "features": [
+    {
+      "id": "FEATURE-001",
+      "title": "Stat Decay System",
+      "type": "enhancement",
+      "priority": "high",
+      "status": "planned",
+      "phase": "2.0",
+      "description": "Allow stats to decrease when making choices contrary to that value",
+      "requirements": [
+        "Add negative values to choice.values",
+        "Update stat change notifications to show decreases (red, downward arrow)",
+        "Decide on minimum stat value (0? negative?)",
+        "Balance decay rate with growth rate"
+      ],
+      "implementation": {
+        "location": "makeChoice function, line 2680",
+        "example": "values: { empathy: 2, wisdom: -1 }"
+      },
+      "estimatedEffort": "3 hours",
+      "tags": ["gameplay", "stats-system", "balance"]
+    },
+    
+    {
+      "id": "FEATURE-002",
+      "title": "Achievement System",
+      "type": "enhancement",
+      "priority": "medium",
+      "status": "planned",
+      "phase": "2.0",
+      "description": "Award badges for various accomplishments",
+      "proposedAchievements": [
+        "Altruxan Exemplar - All stats > 10",
+        "Wise Counsel - Unlock all wisdom-gated choices",
+        "Courageous Heart - Unlock all courage-gated choices",
+        "Perfect Balance - All stats within 2 points",
+        "The Long View - Reach 'Long Game' ending",
+        "Voice of Justice - Reach 'Public Advocate' ending",
+        "Inside Reformer - Reach 'Reformer' ending",
+        "Journal Keeper - Write 10+ journal entries",
+        "Self Aware - Retake assessment 3+ times",
+        "Every Path - Complete all story branches"
+      ],
+      "implementation": {
+        "state": "Add achievements array",
+        "storage": "Persist to localStorage",
+        "display": "New achievements view scene",
+        "notifications": "Toast on unlock"
+      },
+      "estimatedEffort": "5 hours",
+      "tags": ["gamification", "motivation", "replay-value"]
+    },
+    
+    {
+      "id": "FEATURE-003",
+      "title": "Character Class System",
+      "type": "enhancement",
+      "priority": "low",
+      "status": "planned",
+      "phase": "2.0",
+      "description": "Assign character class based on stat distribution at end of game",
+      "proposedClasses": [
+        "The Sage - Wisdom dominant (Wis > 10, Wis > others by 3+)",
+        "The Empath - Empathy dominant",
+        "The Champion - Courage dominant",
+        "The Compassionate - Compassion dominant",
+        "The Balanced - All stats within 2 points",
+        "The Strategist - Wisdom + Empathy high",
+        "The Warrior - Courage + Compassion high"
+      ],
+      "implementation": {
+        "location": "Calculate in ending scenes",
+        "display": "Show class icon and description in summary",
+        "storage": "Save to localStorage for profile"
+      },
+      "estimatedEffort": "2 hours",
+      "tags": ["character-development", "gamification"]
+    },
+    
+    {
+      "id": "FEATURE-004",
+      "title": "Second Story Arc - The Healer's Dilemma",
+      "type": "content",
+      "priority": "medium",
+      "status": "concept",
+      "phase": "2.5",
+      "description": "Medical ethics scenario exploring different moral dimensions",
+      "content": {
+        "protagonist": "Dr. Sarah Chen",
+        "setting": "Urban hospital",
+        "conflict": "Limited resources, triage decisions, insurance denials",
+        "themes": [
+          "Healthcare as right vs privilege",
+          "Individual care vs public health",
+          "Professional duty vs institutional constraints",
+          "Burnout and self-care vs dedication"
+        ],
+        "estimatedScenes": "15-20",
+        "estimatedChoices": "40-50",
+        "uniqueMechanics": [
+          "Time pressure on some decisions",
+          "Patient relationship tracking",
+          "Resource management"
+        ]
+      },
+      "estimatedEffort": "20 hours",
+      "tags": ["content", "story", "major-feature"]
+    },
+    
+    {
+      "id": "FEATURE-005",
+      "title": "Cloud Save System",
+      "type": "infrastructure",
+      "priority": "high",
+      "status": "planned",
+      "phase": "3.0",
+      "description": "Enable cross-device progress persistence",
+      "requirements": [
+        "Backend service (Firebase/Supabase)",
+        "User authentication (optional anonymous)",
+        "Sync mechanism",
+        "Conflict resolution",
+        "Multiple save slots",
+        "Export/import functionality"
+      ],
+      "technicalConsiderations": [
+        "Privacy - encrypt user data",
+        "Cost - free tier limits",
+        "Offline mode - queue changes",
+        "Migration from localStorage"
+      ],
+      "estimatedEffort": "40 hours",
+      "tags": ["infrastructure", "backend", "major-feature"]
+    },
+    
+    {
+      "id": "FEATURE-006",
+      "title": "Share Your Path Feature",
+      "type": "social",
+      "priority": "medium",
+      "status": "planned",
+      "phase": "3.0",
+      "description": "Generate shareable character profile and journey summary",
+      "features": [
+        "Final stats visualization (chart/graph)",
+        "Key choices made (timeline)",
+        "Character class and achievements",
+        "Unique shareable URL",
+        "Social media card generation",
+        "Export as image (PNG/JPEG)",
+        "Twitter/Facebook share buttons"
+      ],
+      "implementation": {
+        "urlStructure": "/journey/:uniqueId",
+        "imageGeneration": "html2canvas or server-side",
+        "storage": "Database for shared journeys"
+      },
+      "estimatedEffort": "15 hours",
+      "tags": ["social", "sharing", "marketing"]
+    },
+    
+    {
+      "id": "FEATURE-007",
+      "title": "Guided Tutorial Mode",
+      "type": "onboarding",
+      "priority": "medium",
+      "status": "planned",
+      "phase": "2.5",
+      "description": "Optional walkthrough for first-time players",
+      "elements": [
+        "Welcome modal on first visit",
+        "Highlight UI elements with tooltips",
+        "Explain stat system and how it affects choices",
+        "Show example of gated choice",
+        "Explain journal system",
+        "Can be skipped or replayed"
+      ],
+      "implementation": {
+        "library": "react-joyride or custom",
+        "storage": "Track tutorial completion in localStorage"
+      },
+      "estimatedEffort": "8 hours",
+      "tags": ["onboarding", "ux", "accessibility"]
+    },
+    
+    {
+      "id": "FEATURE-008",
+      "title": "Stats Forecast on Hover",
+      "type": "enhancement",
+      "priority": "low",
+      "status": "concept",
+      "phase": "2.5",
+      "description": "Show potential stat impacts before making choice",
+      "behavior": [
+        "Hover over choice to see stat changes",
+        "Optional feature (toggle 'strategic mode')",
+        "Don't show for first playthrough by default",
+        "Visual: small stat icons with +/- values"
+      ],
+      "implementation": {
+        "state": "Add 'showStatForecast' preference",
+        "ui": "Tooltip on hover showing choice.values"
+      },
+      "estimatedEffort": "3 hours",
+      "tags": ["ux", "gameplay", "optional"]
+    }
+  ],
+  
+  "technicalDebt": [
+    {
+      "id": "DEBT-001",
+      "title": "Refactor to useReducer for Complex State",
+      "description": "18 separate useState hooks should be consolidated",
+      "currentApproach": "Multiple useState hooks",
+      "proposedApproach": "Single useReducer for game state",
+      "benefits": [
+        "Easier state management",
+        "Better debugging",
+        "Clearer state transitions",
+        "Easier testing"
+      ],
+      "risks": [
+        "Large refactor",
+        "Potential for bugs",
+        "Learning curve"
+      ],
+      "priority": "low",
+      "estimatedEffort": "8 hours"
+    },
+    
+    {
+      "id": "DEBT-002",
+      "title": "Code Splitting for Performance",
+      "description": "All scenarios loaded in memory (~3500 lines)",
+      "currentApproach": "Single large component with all data",
+      "proposedApproach": "Lazy load story arcs, split assessment/teaching/story modules",
+      "benefits": [
+        "Faster initial load",
+        "Better performance",
+        "Easier to maintain",
+        "Enables infinite content expansion"
+      ],
+      "priority": "medium",
+      "estimatedEffort": "12 hours"
+    },
+    
+    {
+      "id": "DEBT-003",
+      "title": "Extract Scenarios to JSON Files",
+      "description": "Scenarios hardcoded in component",
+      "currentApproach": "Scenarios object in component",
+      "proposedApproach": "External JSON files imported dynamically",
+      "benefits": [
+        "Content creators can edit without touching code",
+        "Easier to version control content changes",
+        "Potential for user-generated content",
+        "Translation-friendly"
+      ],
+      "priority": "high",
+      "estimatedEffort": "6 hours"
+    },
+    
+    {
+      "id": "DEBT-004",
+      "title": "Add TypeScript Types",
+      "description": "No type safety on scene objects, choices, state",
+      "currentApproach": "Plain JavaScript",
+      "proposedApproach": "TypeScript with proper interfaces",
+      "benefits": [
+        "Catch bugs at compile time",
+        "Better IDE support",
+        "Self-documenting code",
+        "Easier refactoring"
+      ],
+      "priority": "low",
+      "estimatedEffort": "10 hours"
+    }
+  ],
+  
+  "testingNeeds": [
+    {
+      "category": "Functional",
+      "tests": [
+        "All story paths reach endings",
+        "All gated choices can be unlocked",
+        "Assessment properly converts to stats",
+        "Navigation works in all directions",
+        "Journal saves and loads correctly",
+        "localStorage persistence works",
+        "Retake assessment properly resets"
+      ]
+    },
+    {
+      "category": "Balance",
+      "tests": [
+        "Stat requirements reachable naturally",
+        "Stat gains feel meaningful",
+        "Different builds lead to different endings",
+        "No single stat dominates all paths"
+      ]
+    },
+    {
+      "category": "UX",
+      "tests": [
+        "Mobile usability",
+        "Keyboard navigation",
+        "Screen reader compatibility",
+        "Color contrast WCAG AA",
+        "Loading states clear",
+        "Error messages helpful"
+      ]
+    },
+    {
+      "category": "Performance",
+      "tests": [
+        "Initial load time < 3s",
+        "Navigation feels instant",
+        "No memory leaks",
+        "Works on low-end devices"
+      ]
+    }
+  ],
+  
+  "releaseChecklist": {
+    "v1.6": [
+      "Fix all HIGH priority bugs",
+      "Complete playthrough testing (3 different paths)",
+      "Balance stat requirements",
+      "Mobile testing (3 devices)",
+      "Update documentation"
+    ],
+    "v2.0": [
+      "Implement stat decay",
+      "Add achievements",
+      "Add character classes",
+      "Second story arc",
+      "Comprehensive testing",
+      "Beta testing with 10+ users"
+    ],
+    "v3.0": [
+      "Cloud save implementation",
+      "Social sharing",
+      "Tutorial mode",
+      "Performance optimization",
+      "Public launch"
+    ]
+  }
+}
