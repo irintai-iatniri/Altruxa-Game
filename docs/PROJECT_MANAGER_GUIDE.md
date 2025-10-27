@@ -1061,7 +1061,7 @@ The game can collect (with consent):
 ### Current Team
 
 **Developer:** Claude AI (Anthropic)
-- Built entire v1.5 in collaboration
+- Built entire v.0.0.4 in collaboration
 - Can continue development work
 - Available for iterations/fixes
 

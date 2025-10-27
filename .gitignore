@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Development
+.claude/
+
+# Temporary files
+files/
+files.zip
+
+# Documentation (internal/drafts)
+ONBOARDING_NEXT_CLAUDE.md
+FIXES.md
+data/
+.claude
+vite.config.js
+package-lock.json
+package.json
+files.zip
+
+old_versions/
+
+*.pdf
+Changelogv0.0.4.md
+Changelogv0.0.5.md
+Changelogv0.0.6.md
+QUICK-REFERENCE.txt
