@@ -31,9 +31,49 @@ const coreScenes = {
       { text: "Learn Altruxan Philosophy", next: "values_intro", values: {} },
       { text: "Begin Maya's Story", next: "story_intro", values: {} },
       { text: "⚖️ The Bridge Choice (Hard)", next: "story_bridge_intro", values: {} },
+      { text: "📋 Practical Action Guides", next: "practical_actions_menu", values: {} },
       { text: "📊 View Assessment History", next: "assessment_history_view", values: {} },
       { text: "📔 View Reflection Journal", next: "journal_view", values: {} },
       { text: "🔄 Retake Assessment", next: "retake_assessment", values: {} }
+    ]
+  },
+
+  practical_actions_menu: {
+    title: "Practical Action Guides",
+    text: "Choose an area where you want practical tools for ethical action:",
+    image: "📋",
+    choices: [
+      {
+        text: "🌟 Altruxan Foundations - Daily Practices",
+        action: () => window.showActions?.('altruxan_foundations'),
+        isCustomAction: true
+      },
+      {
+        text: "⚖️ Workplace Ethics - Navigating Institutional Harm",
+        action: () => window.showActions?.('workplace_ethics'),
+        isCustomAction: true
+      },
+      {
+        text: "💝 Interpersonal Ethics - Relationships",
+        action: () => window.showActions?.('interpersonal_ethics'),
+        isCustomAction: true
+      },
+      {
+        text: "🌍 Systemic Thinking - Root Causes",
+        action: () => window.showActions?.('systemic_action'),
+        isCustomAction: true
+      },
+      {
+        text: "🆘 Personal Crisis - When You Need Help",
+        action: () => window.showActions?.('personal_crisis'),
+        isCustomAction: true
+      },
+      {
+        text: "🔧 Moral Repair - When You've Caused Harm",
+        action: () => window.showActions?.('moral_repair'),
+        isCustomAction: true
+      },
+      { text: "Back to Menu", next: "menu", values: {} }
     ]
   },
 

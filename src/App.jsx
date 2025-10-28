@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Heart, Brain, Users, Sparkles, RotateCcw, Check, Home, ChevronLeft, ChevronRight, Download, Moon, Sun, Save, Upload, UserCircle, Plus, Trash2, FolderOpen } from 'lucide-react';
+import { Heart, Brain, Users, Sparkles, RotateCcw, Check, Home, ChevronLeft, ChevronRight, Download, Moon, Sun, Save, Upload, UserCircle, Plus, Trash2, FolderOpen, BookOpen } from 'lucide-react';
 
 // Import scenarios
 import coreScenes from './scenarios/core';
@@ -8,6 +8,7 @@ import bridgeScenes from './scenarios/bridge';
 
 // Import assessment data and handlers
 import { assessmentQuestions, createAssessmentHandlers } from './data/assesments';
+import PRACTICAL_ACTIONS from './data/practical_action/index';
 
 // Import components
 import { StatChangeNotification } from './components/stata_change_notify';
@@ -17,6 +18,7 @@ import { MoralTrajectoryChart } from './components/moral_trajectory';
 import { AssessmentHistory } from './components/assesment_history';
 import { ViewJournal } from './components/view_journal';
 import { JournalModalComponent } from './components/extracted_journal';
+import PracticalActionsModal from './modals/practical_actions_modal';
 
 // Import modals
 import { ProfileManagerModal } from './modals/profile_manager';
@@ -54,6 +56,10 @@ const AltruxaPathGame = () => {
   const [saveLoadMode, setSaveLoadMode] = useState('save');
   const [newSaveName, setNewSaveName] = useState('');
 
+  // Practical Actions state
+  const [showPracticalActions, setShowPracticalActions] = useState(false);
+  const [currentActionSet, setCurrentActionSet] = useState(null);
+
   // Define saveAssessmentToStorage before using it
   const saveAssessmentToStorage = (scores) => {
     const newEntry = {
@@ -83,14 +89,22 @@ const AltruxaPathGame = () => {
     setCurrentScene
   );
 
+  // Expose showActions to window for use in scene definitions
+  React.useEffect(() => {
+    window.showActions = showActions;
+    return () => {
+      delete window.showActions;
+    };
+  }, []);
+
   React.useEffect(() => {
     const storedProfiles = localStorage.getItem('altruxaProfiles');
     const storedCurrentProfile = localStorage.getItem('altruxaCurrentProfile');
-    
+
     if (storedProfiles) {
       const profileList = JSON.parse(storedProfiles);
       setProfiles(profileList);
-      
+
       if (storedCurrentProfile) {
         const profile = profileList.find(p => p.id === storedCurrentProfile);
         if (profile) {
@@ -99,7 +113,7 @@ const AltruxaPathGame = () => {
         }
       }
     }
-    
+
     setShowProfileManager(true);
     setCurrentScene('profile_select');
   }, []);
@@ -411,6 +425,12 @@ Each choice matters. Each moment is an opportunity to reduce suffering.`;
   }
 
   const makeChoice = (choice) => {
+    // Handle custom actions (like showing practical actions modal)
+    if (choice.isCustomAction && choice.action) {
+      choice.action();
+      return;
+    }
+
     // Handle retaking assessment
     if (choice.isRetake) {
       clearAssessment();
@@ -496,14 +516,20 @@ Each choice matters. Each moment is an opportunity to reduce suffering.`;
   // Check if a choice is available based on stat requirements
   const isChoiceAvailable = (choice) => {
     if (!choice.requires) return true;
-    
+
     // Check all stat requirements
     if (choice.requires.empathy && score.empathy < choice.requires.empathy) return false;
     if (choice.requires.wisdom && score.wisdom < choice.requires.wisdom) return false;
     if (choice.requires.compassion && score.compassion < choice.requires.compassion) return false;
     if (choice.requires.courage && score.courage < choice.requires.courage) return false;
-    
+
     return true;
+  };
+
+  // Show practical actions modal
+  const showActions = (actionSetKey) => {
+    setCurrentActionSet(PRACTICAL_ACTIONS[actionSetKey]);
+    setShowPracticalActions(true);
   };
 
   const getScoreColor = (value) => {
@@ -1240,6 +1266,17 @@ Each choice matters. Each moment is an opportunity to reduce suffering.`;
                   <div>• <strong>Intent Matters:</strong> Doing for others elevates the moral weight of our actions.</div>
                 </div>
               </div>
+
+              {/* Practical Action Guide Button */}
+              <div className="mt-6 text-center">
+                <button
+                  onClick={() => showActions('workplace_ethics')}
+                  className="px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-blue-700 transition-all flex items-center gap-2 mx-auto"
+                >
+                  <BookOpen className="w-5 h-5" />
+                  Get Practical Action Guide
+                </button>
+              </div>
             </div>
           ) : (
             <>
@@ -1368,6 +1405,14 @@ Each choice matters. Each moment is an opportunity to reduce suffering.`;
         promptText={currentJournalPrompt}
         darkMode={darkMode}
     />
+
+    {showPracticalActions && currentActionSet && (
+      <PracticalActionsModal
+        actionSet={currentActionSet}
+        onClose={() => setShowPracticalActions(false)}
+        darkMode={darkMode}
+      />
+    )}
     </>
   );
 };

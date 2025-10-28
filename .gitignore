@@ -23,7 +23,7 @@ files.zip
 # Documentation (internal/drafts)
 ONBOARDING_NEXT_CLAUDE.md
 FIXES.md
-data/
+node_modules/
 .claude
 vite.config.js
 package-lock.json
